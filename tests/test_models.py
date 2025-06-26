@@ -3,6 +3,7 @@ import pytest
 from src.models import Product
 from src.models import Category
 
+#Фикстуры
 @pytest.fixture
 def simple_product():
     return Product(
