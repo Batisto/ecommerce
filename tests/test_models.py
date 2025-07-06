@@ -50,6 +50,7 @@ def test_class_counters_reset_and_counting():
     assert Category.category_count == 2
     assert Category.product_count == 5
 
+
 #Category
 
 def test_add_product_affects_internal_list():
@@ -67,6 +68,20 @@ def test_products_property_format():
     result = c.products.split("\n")
     assert result[0] == "Товар 1, 80 руб. Остаток: 5 шт."
     assert result[1] == "Товар 2, 150 руб. Остаток: 2 шт."
+
+
+def test_add_product_type_check():
+    cat = Category("Категория", "Тест", [])
+    valid_product = Product("Товар", "Описание", 100.0, 1)
+    invalid_product = "Что угодно кроме экземпляра или наследника Product"
+
+    # Корректный случай
+    cat.add_product(valid_product)
+    assert "Товар" in cat.products
+
+    # Ошибка, если тип неверный
+    with pytest.raises(TypeError):
+        cat.add_product(invalid_product)
 
 
 #Product.new_product
