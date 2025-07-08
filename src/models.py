@@ -8,6 +8,14 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
+    def __str__(self):
+        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other):
+        if isinstance(other, Product):
+            return self.__price * self.quantity + other.price * other.quantity
+        return NotImplemented
+
     @property
     def price(self) -> float:
         return self.__price
@@ -60,6 +68,9 @@ class Category:
 
         Category.category_count += 1
 
+    def __str__(self):
+        return f"{self.name}, количество продуктов: {sum(product.quantity for product in self.__products)} шт"
+
     def add_product(self, product: Product):
         if not isinstance(product, Product):
             raise TypeError("Можно добавлять только экземпляры Product или его наследников")
@@ -72,3 +83,8 @@ class Category:
             f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт."
             for product in self.__products
         )
+
+product1 = Product("p1", "d1", 10, 2)
+product2 = Product("p2", "d2", 20, 3)
+
+print(product1 + product2)
