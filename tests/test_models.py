@@ -1,5 +1,5 @@
 import pytest
-from src.models import Product, Category
+from src.models import Product, Category, Smartphone, LawnGrass
 
 # ФИКСТУРЫ
 
@@ -149,3 +149,53 @@ def test_class_counters_reset_and_counting():
 
     assert Category.category_count == 2
     assert Category.product_count == 5
+
+
+# ТЕСТЫ НАСЛЕДНИКОВ Product
+
+def test_smartphone_inherits_product():
+    phone = Smartphone(
+        efficiency=95,
+        model="iPhone 15",
+        memory="256GB",
+        color="Black",
+        name="Смартфон",
+        description="Флагман",
+        price=99999,
+        quantity=5
+    )
+    assert isinstance(phone, Product)
+    assert phone.name == "Смартфон"
+    assert phone.model == "iPhone 15"
+    assert phone.color == "Black"
+    assert phone.price == 99999
+
+
+def test_lawngrass_inherits_product():
+    grass = LawnGrass(
+        name="Газон",
+        description="Для дачи",
+        price=199.99,
+        quantity=10,
+        country="Россия",
+        germination_period="7 дней",
+        color="Зелёный"
+    )
+    assert isinstance(grass, Product)
+    assert grass.country == "Россия"
+    assert grass.germination_period == "7 дней"
+    assert grass.price == 199.99
+
+
+def test_adding_smartphone_to_category():
+    cat = Category("Гаджеты", "Смартфоны", [])
+    phone = Smartphone(95, "Samsung", "128GB", "Blue", "Galaxy", "Описание", 50000, 2)
+    cat.add_product(phone)
+    assert "Galaxy" in cat.products
+
+
+def test_adding_lawngrass_to_category():
+    cat = Category("Растения", "Газонная трава", [])
+    grass = LawnGrass("Газон", "Описание", 300, 4, "Германия", "5 дней", "Зелёный")
+    cat.add_product(grass)
+    assert "Газон" in cat.products
