@@ -79,7 +79,6 @@ class Category:
         self.name = name
         self.description = description
         self.__products = []
-
         for product in products:
             self.add_product(product)
 
