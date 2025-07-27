@@ -45,13 +45,7 @@ class Product:
                 if data["price"] > product.price:
                     product.price = data["price"]
                 return product
-
-        return cls(
-            name=data["name"],
-            description=data["description"],
-            price=data["price"],
-            quantity=data["quantity"]
-        )
+        return cls(**data)
 
 
 class Smartphone(Product):
