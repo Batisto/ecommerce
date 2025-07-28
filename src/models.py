@@ -1,8 +1,40 @@
 from typing import List
+from abc import ABC, abstractmethod
 
 
-class Product:
+class BaseProduct(ABC):
+    @abstractmethod
     def __init__(self, name: str, description: str, price: float, quantity: int):
+        self.name = name
+        self.description = description
+        self.price = price
+        self.quantity = quantity
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+    @property
+    @abstractmethod
+    def price(self) -> float:
+        pass
+
+    @price.setter
+    @abstractmethod
+    def price(self, new_price: float):
+        pass
+
+
+class CreationLogMixin:
+    def __init__(self, **kwargs):
+        class_name = self.__class__.__name__
+        print(f"{class_name} создан с параметрами: kwargs={kwargs}")
+        super().__init__(**kwargs)
+
+
+class Product(CreationLogMixin, BaseProduct):
+    def __init__(self, name: str, description: str, price: float, quantity: int):
+        super().__init__(name=name, description=description, price=price, quantity=quantity)
         self.name = name
         self.description = description
         self.__price = price

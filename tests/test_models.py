@@ -199,3 +199,36 @@ def test_adding_lawngrass_to_category():
     grass = LawnGrass("Газон", "Описание", 300, 4, "Германия", "5 дней", "Зелёный")
     cat.add_product(grass)
     assert "Газон" in cat.products
+
+
+@pytest.fixture
+def sample_data():
+    return {
+        "name": "TestProduct",
+        "description": "A test product",
+        "price": 100.0,
+        "quantity": 10
+    }
+
+@pytest.fixture
+def existing_product():
+    return [
+        Product(name="TestProduct", description="Old product", price=80.0, quantity=5)
+    ]
+
+def test_new_product_existing(sample_data, existing_product):
+    product = Product.new_product(sample_data, existing_product)
+    assert product.quantity == 15
+    assert product.price == 100.0
+
+def test_new_product_new_instance(sample_data):
+    result = Product.new_product(sample_data, [])
+    assert isinstance(result, Product)
+    assert result.name == "TestProduct"
+    assert result.description == "A test product"
+    assert result.price == 100.0
+    assert result.quantity == 10
+
+def test_creation_time_exists(sample_data):
+    product = Product(**sample_data)
+    assert hasattr(product, "creation_time")
