@@ -4,13 +4,6 @@ from abc import ABC, abstractmethod
 
 class BaseProduct(ABC):
     @abstractmethod
-    def __init__(self, name: str, description: str, price: float, quantity: int):
-        self.name = name
-        self.description = description
-        self.price = price
-        self.quantity = quantity
-
-    @abstractmethod
     def __str__(self):
         pass
 
@@ -26,15 +19,12 @@ class BaseProduct(ABC):
 
 
 class CreationLogMixin:
-    def __init__(self, **kwargs):
-        class_name = self.__class__.__name__
-        print(f"{class_name} создан с параметрами: kwargs={kwargs}")
-        super().__init__(**kwargs)
+    def __repr__(self):
+        return f"{self.__class__.__name__}(name={self.name}, price={self.price}, quantity={self.quantity})"
 
 
 class Product(CreationLogMixin, BaseProduct):
     def __init__(self, name: str, description: str, price: float, quantity: int):
-        super().__init__(name=name, description=description, price=price, quantity=quantity)
         self.name = name
         self.description = description
         self.__price = price

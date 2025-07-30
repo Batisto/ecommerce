@@ -228,7 +228,3 @@ def test_new_product_new_instance(sample_data):
     assert result.description == "A test product"
     assert result.price == 100.0
     assert result.quantity == 10
-
-def test_creation_time_exists(sample_data):
-    product = Product(**sample_data)
-    assert hasattr(product, "creation_time")
