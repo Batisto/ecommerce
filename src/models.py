@@ -25,6 +25,9 @@ class CreationLogMixin:
 
 class Product(CreationLogMixin, BaseProduct):
     def __init__(self, name: str, description: str, price: float, quantity: int):
+        if quantity <= 0:
+            raise ValueError("Товар с нулевым или отрицательным количеством не может быть добавлен")
+
         self.name = name
         self.description = description
         self.__price = price
@@ -115,3 +118,9 @@ class Category:
             f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт."
             for product in self.__products
         )
+
+    def calculate_average(self):
+        if not self.__products:
+            return 0
+        return sum(product.price for product in self.__products) / len(self.__products)
+

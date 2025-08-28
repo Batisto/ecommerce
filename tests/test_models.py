@@ -93,6 +93,18 @@ def test_price_setter_confirmation_no(monkeypatch, capsys):
     assert p.price == 10000
 
 
+def test_product_zero_quantity():
+    with pytest.raises(ValueError, match="Товар с нулевым или отрицательным количеством не может быть добавлен"):
+        Product(name="Тест", description="Описание", price=100, quantity=0)
+
+
+def test_product_positive_quantity():
+    p = Product(name="Тест", description="Описание", price=100, quantity=5)
+    assert p.quantity == 5
+    assert p.price == 100
+    assert p.name == "Тест"
+
+
 # ТЕСТЫ ДЛЯ КЛАССА CATEGORY
 
 def test_category_initialization(category_with_products):
@@ -149,6 +161,20 @@ def test_class_counters_reset_and_counting():
 
     assert Category.category_count == 2
     assert Category.product_count == 5
+
+
+def test_category_average():
+    p1 = Product(name="Товар1", description="desc", price=100, quantity=1)
+    p2 = Product(name="Товар2", description="desc", price=200, quantity=2)
+    cat = Category(name="Категория", description="desc", products=[p1, p2])
+
+    expected_average = (p1.price + p2.price) / 2
+    assert cat.calculate_average() == expected_average
+
+
+def test_category_average_empty():
+    cat = Category(name="Пустая", description="desc", products=[])
+    assert cat.calculate_average() == 0
 
 
 # ТЕСТЫ НАСЛЕДНИКОВ Product
